@@ -10,7 +10,7 @@ const config = {
 
    overrides: [
       {
-         files: '*.json',
+         files: ['*.json', '*.yaml'],
          options: {
             tabWidth: 2,
          },
