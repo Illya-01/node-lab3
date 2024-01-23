@@ -1,0 +1,23 @@
+{
+  "name": "node-lab3",
+  "version": "1.0.0",
+  "description": "Simple http/https proxy",
+  "main": "proxy.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
+  },
+  "keywords": [
+    "proxy"
+  ],
+  "author": "Illia Roman, group IO-12",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-sonarjs": "^0.23.0",
+    "prettier": "3.2.4"
+  }
+}
