@@ -21,7 +21,10 @@ module.exports = {
       sourceType: 'module',
    },
    rules: {
+      'no-console': 'off',
       'one-var': 'off',
+      'sort-keys': 'warn',
+      'no-void': 'warn',
    },
    ignorePatterns: ['.eslintrc.*'],
 }
