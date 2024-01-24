@@ -24,28 +24,35 @@ const receiveBody = async stream => {
 const server = http.createServer(async (req, res) => {
    const { remoteAddress, remotePort } = req.socket
    const { headers, url, method } = req
-   const { pathname, hostname } = new URL(url)
-   const options = { hostname, path: pathname, method, headers }
 
-   const request = http.request(options, result => void result.pipe(res))
+   try {
+      const { pathname, hostname } = new URL(url)
+      const options = { hostname, path: pathname, method, headers }
 
-   console.log(
-      `HTTP connection from ${remoteAddress}:${remotePort} to ${hostname} established 🤝`
-   )
+      const request = http.request(options, result => void result.pipe(res))
 
-   request.on('error', err => {
-      console.error(`Error in outgoing request 🔴: ${err.message}`)
-      res.writeHead(500)
-      res.end('Internal server error')
-   })
+      console.log(
+         `HTTP connection from ${remoteAddress}:${remotePort} to ${hostname} established 🤝`
+      )
 
-   if (method === 'POST') {
-      const body = await receiveBody(req)
-      request.write(body)
-      console.log(`POST body: ${body.toString()}`)
+      request.on('error', err => {
+         console.error(`Error in outgoing request 🔴: ${err.message}`)
+         res.writeHead(500)
+         res.end(`Internal server error${CRLF}`)
+      })
+
+      if (method === 'POST') {
+         const body = await receiveBody(req)
+         request.setHeader('Content-Length', Buffer.byteLength(body))
+         request.write(body)
+         console.log(`Request body: ${body.toString()}`)
+      }
+
+      request.end()
+   } catch (err) {
+      res.writeHead(400)
+      res.end(`${err.message}${CRLF}${CRLF}`)
    }
-
-   request.end()
 })
 
 // For HTTPS requests
@@ -56,7 +63,7 @@ server.on('connect', (req, socket, head) => {
    const targetPort = parseInt(port, 10)
 
    console.log(
-      `HTTPS connection from ${remoteAddress}:${remotePort} to ${hostname}:${targetPort} established 🤝`
+      `HTTPS connection from ${remoteAddress}:${remotePort} to ${hostname} established 🤝`
    )
 
    const proxy = net.connect(targetPort, hostname, () => {
@@ -70,6 +77,10 @@ server.on('connect', (req, socket, head) => {
       console.error(`Error in TCP connection 🔴: ${err.message}`)
       socket.end()
    })
+})
+
+server.on('error', error => {
+   console.error(`Error in server: ${error.message}`)
 })
 
 server.listen(PORT, () => {
