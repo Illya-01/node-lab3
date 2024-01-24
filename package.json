@@ -5,6 +5,7 @@
   "main": "proxy.js",
   "type": "module",
   "scripts": {
+    "start": "node proxy.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --check .",
@@ -17,6 +18,7 @@
   "author": "Illia Roman, group IO-12",
   "license": "ISC",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.0",
     "eslint": "^8.56.0",
     "eslint-plugin-sonarjs": "^0.23.0",
     "husky": "^8.0.3",

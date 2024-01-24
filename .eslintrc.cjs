@@ -23,6 +23,9 @@ module.exports = {
    rules: {
       'no-console': 'off',
       'one-var': 'off',
+      'capitalized-comments': 'off',
+      'max-statements': 'off',
+      'no-magic-numbers': 'warn',
       'sort-keys': 'warn',
       'no-void': 'warn',
    },
